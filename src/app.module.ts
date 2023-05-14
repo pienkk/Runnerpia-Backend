@@ -17,9 +17,11 @@ import { AuthModule } from './auth/auth.module';
 import { UserRecommendedTag } from './user/entities/user-recommended-tag.entity';
 import { UserSecureTag } from './user/entities/user-secure-tag.entity';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory() {
         return {
@@ -54,7 +56,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
       config: {
         host: process.env.REDIS_HOST,
         port: parseInt(process.env.REDIS_DOCKER_PORT),
-        password: process.env.REDIS_PASSWORD,
+        // password: process.env.REDIS_PASSWORD,
       },
     }),
     UserModule,

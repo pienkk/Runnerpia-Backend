@@ -204,7 +204,7 @@ export class UserService {
     return result.id;
   }
 
-  async deleteBookmark(deleteBookmarkDto: DeleteBookmarkDto,userId: string){
+  async deleteBookmark(deleteBookmarkDto: DeleteBookmarkDto, userId: string) {
     const isExist = await this.bookmarkRepository
       .createQueryBuilder('bookmark')
       .where('bookmark.user =:userId', { userId: userId })
@@ -242,7 +242,7 @@ export class UserService {
     const isExist = await this.userRepository.findOneBy({
       userId: userId,
     });
-    if(isExist){
+    if (isExist) {
       throw new ForbiddenException({
         statusCode: HttpStatus.FORBIDDEN,
         message: ['Already registered userId'],
@@ -251,11 +251,11 @@ export class UserService {
     }
   }
 
-  async checkNickname(nickname: string){
+  async checkNickname(nickname: string) {
     const isExist = await this.userRepository.findOneBy({
       nickname: nickname,
     });
-    if(isExist){
+    if (isExist) {
       throw new ForbiddenException({
         statusCode: HttpStatus.FORBIDDEN,
         message: ['Already registered nickname'],

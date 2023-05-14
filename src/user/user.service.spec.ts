@@ -83,7 +83,7 @@ describe('UserService', () => {
         city: '서울특별시',
         state: '성동구',
         recommendedTags: [1, 2, 4],
-        secureTags: [1, 3, 5]
+        secureTags: [1, 3, 5],
       };
 
       usersRepository.save.mockResolvedValue(user);
@@ -112,7 +112,7 @@ describe('UserService', () => {
         city: '서울특별시',
         state: '성동구',
         recommendedTags: [1, 2, 4],
-        secureTags: [1, 3, 5]
+        secureTags: [1, 3, 5],
       };
 
       usersRepository.findOneBy.mockResolvedValue(user);
@@ -133,7 +133,7 @@ describe('UserService', () => {
         city: '서울특별시',
         state: '성동구',
         recommendedTags: [1, 2, 4],
-        secureTags: [1, 3, 5]
+        secureTags: [1, 3, 5],
       };
 
       await expect(async () => {
@@ -153,7 +153,7 @@ describe('UserService', () => {
         city: '서울특별시',
         state: '성동구',
         recommendedTags: [1, 2, 4],
-        secureTags: [1, 3, 5]
+        secureTags: [1, 3, 5],
       };
 
       const after = {
@@ -186,7 +186,7 @@ describe('UserService', () => {
         city: '서울특별시',
         state: '성동구',
         recommendedTags: [1, 2, 4],
-        secureTags: [1, 3, 5]
+        secureTags: [1, 3, 5],
       };
 
       const body = {
