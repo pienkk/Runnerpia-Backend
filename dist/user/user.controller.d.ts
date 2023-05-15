@@ -3,10 +3,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { DeleteBookmarkDto } from './dto/delete-bookmark.dto';
+import { ResponseCreateUserDto } from './dto/response-user.dto';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    create(createUserDto: CreateUserDto): Promise<any>;
+    create(createUserDto: CreateUserDto): Promise<ResponseCreateUserDto>;
     update(req: any, updateUserDto: UpdateUserDto): Promise<any>;
     remove(req: any): Promise<void>;
     getBookmarks(req: any): Promise<any>;

@@ -11,17 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
@@ -33,6 +22,7 @@ const user_recommended_tag_entity_1 = require("./entities/user-recommended-tag.e
 const user_secure_tag_entity_1 = require("./entities/user-secure-tag.entity");
 const bookmark_entity_1 = require("./entities/bookmark.entity");
 const running_route_entity_1 = require("../running-route/entities/running-route.entity");
+const response_user_dto_1 = require("./dto/response-user.dto");
 let UserService = class UserService {
     constructor(userRepository, userRecommendedTagRepository, userSecureTagRepository, bookmarkRepository, runningRouteRepository) {
         this.userRepository = userRepository;
@@ -63,7 +53,7 @@ let UserService = class UserService {
             });
         }
     }
-    async create(createUserDto) {
+    async createUser(createUserDto) {
         const isExist = await this.userRepository.findOneBy({
             userId: createUserDto.userId,
         });
@@ -82,9 +72,9 @@ let UserService = class UserService {
             });
         }
         createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-        const _a = await this.userRepository.save(createUserDto), { password } = _a, result = __rest(_a, ["password"]);
+        const user = await this.userRepository.save(createUserDto);
         await this.updateTagsInfo(createUserDto);
-        return result;
+        return response_user_dto_1.ResponseCreateUserDto.fromEntity(user);
     }
     async update(userId, updateUserDto) {
         const { name, nickname, password, birthDate, gender } = updateUserDto;

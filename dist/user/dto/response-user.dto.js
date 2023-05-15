@@ -9,113 +9,89 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateUserDto = void 0;
+exports.ResponseCreateUserDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class CreateUserDto {
+class ResponseCreateUserDto {
+    static fromEntity(entity) {
+        const dto = new ResponseCreateUserDto();
+        dto.name = entity.name;
+        dto.nickname = entity.nickname;
+        dto.userId = entity.userId;
+        dto.numberOfUse = entity.numberOfUse;
+        dto.birthDate = entity.birthDate;
+        dto.gender = entity.gender;
+        dto.city = entity.city;
+        dto.state = entity.state;
+        return dto;
+    }
 }
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, swagger_1.ApiProperty)({
         description: '유저 이름',
         example: '홍길동',
-        required: false,
     }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "name", void 0);
+], ResponseCreateUserDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, swagger_1.ApiProperty)({
         description: '유저 닉네임',
         example: '홍길동',
-        required: false,
     }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "nickname", void 0);
+], ResponseCreateUserDto.prototype, "nickname", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, swagger_1.ApiProperty)({
         description: '유저 아이디',
         example: 'hongildong',
-        required: true,
     }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "userId", void 0);
+], ResponseCreateUserDto.prototype, "userId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, swagger_1.ApiProperty)({
-        description: '유저 비밀번호',
-        example: 'Qwer1234!',
-        required: true,
+        description: '이용 횟수',
+        example: '0',
     }),
-    __metadata("design:type", String)
-], CreateUserDto.prototype, "password", void 0);
+    __metadata("design:type", Number)
+], ResponseCreateUserDto.prototype, "numberOfUse", void 0);
 __decorate([
-    (0, class_validator_1.IsNumberString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
     (0, swagger_1.ApiProperty)({
         description: '생년월일',
         example: '1995',
-        required: false,
     }),
     __metadata("design:type", Number)
-], CreateUserDto.prototype, "birthDate", void 0);
+], ResponseCreateUserDto.prototype, "birthDate", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)({
         F: 'F',
         M: 'M',
     }),
-    (0, class_validator_1.IsOptional)(),
     (0, swagger_1.ApiProperty)({
         description: '성별',
         example: 'M',
-        required: false,
     }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "gender", void 0);
+], ResponseCreateUserDto.prototype, "gender", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, swagger_1.ApiProperty)({
         description: '도시',
         example: '서울',
-        required: false,
     }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "city", void 0);
+], ResponseCreateUserDto.prototype, "city", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, swagger_1.ApiProperty)({
-        description: '지역',
-        example: '봉천동',
-        required: false,
+        description: '도',
+        example: '서울',
     }),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "state", void 0);
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)({}, { each: true }),
-    (0, swagger_1.ApiProperty)({
-        description: '관심 태그',
-        example: [1, 2, 3],
-        required: false,
-    }),
-    __metadata("design:type", Array)
-], CreateUserDto.prototype, "recommendedTags", void 0);
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)({}, { each: true }),
-    (0, swagger_1.ApiProperty)({
-        description: '보안 태그',
-        example: [1, 2, 3],
-        required: false,
-    }),
-    __metadata("design:type", Array)
-], CreateUserDto.prototype, "secureTags", void 0);
-exports.CreateUserDto = CreateUserDto;
-//# sourceMappingURL=create-user.dto.js.map
+], ResponseCreateUserDto.prototype, "state", void 0);
+exports.ResponseCreateUserDto = ResponseCreateUserDto;
+//# sourceMappingURL=response-user.dto.js.map

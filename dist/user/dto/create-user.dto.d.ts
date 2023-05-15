@@ -4,7 +4,7 @@ export declare class CreateUserDto {
     readonly userId: string;
     password: string;
     readonly birthDate: number;
-    readonly gender: string;
+    readonly gender: 'F' | 'M';
     readonly city: string;
     readonly state: string;
     readonly recommendedTags: number[];

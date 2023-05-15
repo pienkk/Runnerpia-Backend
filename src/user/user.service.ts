@@ -16,6 +16,7 @@ import { Bookmark } from './entities/bookmark.entity';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { RunningRoute } from '../running-route/entities/running-route.entity';
 import { DeleteBookmarkDto } from './dto/delete-bookmark.dto';
+import { ResponseCreateUserDto } from './dto/response-user.dto';
 
 @Injectable()
 export class UserService {
@@ -56,7 +57,10 @@ export class UserService {
     }
   }
 
-  async create(createUserDto: CreateUserDto): Promise<any> {
+  /**
+   * 유저 회원가입
+   */
+  async createUser(createUserDto: CreateUserDto) {
     const isExist = await this.userRepository.findOneBy({
       userId: createUserDto.userId,
     });
@@ -78,12 +82,11 @@ export class UserService {
 
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10); // FIX ME : use env
 
-    const { password, ...result } = await this.userRepository.save(
-      createUserDto,
-    );
+    const user = await this.userRepository.save(createUserDto);
 
     await this.updateTagsInfo(createUserDto);
-    return result;
+
+    return ResponseCreateUserDto.fromEntity(user);
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto) {

@@ -10,7 +10,7 @@ export declare class User {
     password: string;
     numberOfUse: number;
     birthDate: number;
-    gender: string;
+    gender: 'F' | 'M';
     city: string;
     state: string;
     createdAt: Date;

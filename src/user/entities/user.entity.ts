@@ -25,6 +25,7 @@ export class User {
   userId: string;
 
   @Column({ type: 'varchar', nullable: true })
+  @Exclude()
   password: string;
 
   @Column({ type: 'int', default: 0 })
@@ -33,8 +34,8 @@ export class User {
   @Column({ type: 'int', nullable: true })
   birthDate: number;
 
-  @Column({ type: 'varchar', length: 1, nullable: true })
-  gender: string;
+  @Column({ type: 'enum', enum: ['F', 'M'], nullable: true })
+  gender: 'F' | 'M';
 
   @Column({ type: 'varchar', length: 50, nullable: true })
   city: string;

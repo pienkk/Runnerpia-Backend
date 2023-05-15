@@ -8,6 +8,7 @@ import { Bookmark } from './entities/bookmark.entity';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { RunningRoute } from '../running-route/entities/running-route.entity';
 import { DeleteBookmarkDto } from './dto/delete-bookmark.dto';
+import { ResponseCreateUserDto } from './dto/response-user.dto';
 export declare class UserService {
     private userRepository;
     private userRecommendedTagRepository;
@@ -16,7 +17,7 @@ export declare class UserService {
     private runningRouteRepository;
     constructor(userRepository: Repository<User>, userRecommendedTagRepository: Repository<UserRecommendedTag>, userSecureTagRepository: Repository<UserSecureTag>, bookmarkRepository: Repository<Bookmark>, runningRouteRepository: Repository<RunningRoute>);
     updateTagsInfo(userDto: UpdateUserDto): Promise<void>;
-    create(createUserDto: CreateUserDto): Promise<any>;
+    createUser(createUserDto: CreateUserDto): Promise<ResponseCreateUserDto>;
     update(userId: string, updateUserDto: UpdateUserDto): Promise<void>;
     remove(userId: string): Promise<void>;
     getBookmarks(userId: string): Promise<any>;

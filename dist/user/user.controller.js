@@ -20,12 +20,14 @@ const update_user_dto_1 = require("./dto/update-user.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const create_bookmark_dto_1 = require("./dto/create-bookmark.dto");
 const delete_bookmark_dto_1 = require("./dto/delete-bookmark.dto");
+const swagger_1 = require("@nestjs/swagger");
+const response_user_dto_1 = require("./dto/response-user.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
     async create(createUserDto) {
-        return await this.userService.create(createUserDto);
+        return await this.userService.createUser(createUserDto);
     }
     update(req, updateUserDto) {
         return this.userService.update(req.user.userId, updateUserDto);
@@ -57,6 +59,18 @@ let UserController = class UserController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiOperation)({
+        summary: '회원가입 API',
+        description: '회원정보를 받아 회원가입을 한다.',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: '회원가입 성공',
+        type: response_user_dto_1.ResponseCreateUserDto,
+    }),
+    (0, swagger_1.ApiBody)({
+        type: create_user_dto_1.CreateUserDto,
+    }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
@@ -136,6 +150,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "checkNickname", null);
 UserController = __decorate([
+    (0, swagger_1.ApiTags)('user'),
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);

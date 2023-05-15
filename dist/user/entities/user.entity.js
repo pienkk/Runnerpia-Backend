@@ -33,6 +33,7 @@ __decorate([
 ], User.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    (0, class_transformer_1.Exclude)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
@@ -44,7 +45,7 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "birthDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 1, nullable: true }),
+    (0, typeorm_1.Column)({ type: 'enum', enum: ['F', 'M'], nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "gender", void 0);
 __decorate([
