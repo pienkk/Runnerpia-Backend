@@ -29,19 +29,13 @@ export class CreateRunningRouteDto {
   readonly review: string;
 
   @IsString()
-  readonly firstLocation: string;
-
-  @IsString()
-  readonly secondLocation: string;
-
-  @IsString()
-  readonly thirdLocation: string;
+  readonly location: string;
 
   @IsDateString()
   readonly runningDate: Date;
 
-  @IsString()
-  readonly routeImage: string;
+  // @IsString()
+  // readonly routeImage: string;
 
   @IsArray()
   @IsOptional()

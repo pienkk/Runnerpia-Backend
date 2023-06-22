@@ -43,20 +43,14 @@ export class RunningRoute {
   @Column({ type: 'date' })
   runningDate: Date;
 
-  @Column({ type: 'varchar' })
-  routeImage: string;
+  // @Column({ type: 'varchar' })
+  // routeImage: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   key: string;
 
   @Column({ type: 'varchar' })
-  firstLocation: string;
-
-  @Column({ type: 'varchar' })
-  secondLocation: string;
-
-  @Column({ type: 'varchar' })
-  thirdLocation: string;
+  location: string;
 
   @CreateDateColumn()
   createdAt: Date;

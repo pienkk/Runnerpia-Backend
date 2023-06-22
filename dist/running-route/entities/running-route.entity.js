@@ -56,25 +56,13 @@ __decorate([
     __metadata("design:type", Date)
 ], RunningRoute.prototype, "runningDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
-    __metadata("design:type", String)
-], RunningRoute.prototype, "routeImage", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], RunningRoute.prototype, "key", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar' }),
     __metadata("design:type", String)
-], RunningRoute.prototype, "firstLocation", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
-    __metadata("design:type", String)
-], RunningRoute.prototype, "secondLocation", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
-    __metadata("design:type", String)
-], RunningRoute.prototype, "thirdLocation", void 0);
+], RunningRoute.prototype, "location", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

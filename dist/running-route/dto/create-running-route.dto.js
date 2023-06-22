@@ -37,23 +37,11 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateRunningRouteDto.prototype, "firstLocation", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateRunningRouteDto.prototype, "secondLocation", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateRunningRouteDto.prototype, "thirdLocation", void 0);
+], CreateRunningRouteDto.prototype, "location", void 0);
 __decorate([
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", Date)
 ], CreateRunningRouteDto.prototype, "runningDate", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateRunningRouteDto.prototype, "routeImage", void 0);
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

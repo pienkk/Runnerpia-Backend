@@ -54,24 +54,31 @@ export class RunningRouteController {
     return await this.runningRouteService.searchBasedOnCity(cityQueryStringDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('/allSubRoute')
   async getAllSubRoute(@Req() req) {
-    return await this.runningRouteService.getAllSubRoute(req.user.userId);
+    return await this.runningRouteService.getAllSubRoute(
+      // req.user.userId
+      'hongildong',
+    );
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('/allMainRoute')
   async getAllMainRoute(@Req() req) {
-    return await this.runningRouteService.getAllMainRoute(req.user.userId);
+    return await this.runningRouteService.getAllMainRoute(
+      // req.user.userId
+      'hongildong',
+    );
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('/checkRunningExperience/:id')
   async checkRunningExperience(@Param('id') id: number, @Req() req) {
     return await this.runningRouteService.checkRunningExperience(
       id,
-      req.user.userId,
+      // req.user.userId,
+      'hongildong',
     );
   }
 

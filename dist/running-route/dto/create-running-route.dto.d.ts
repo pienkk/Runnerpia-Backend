@@ -8,11 +8,8 @@ export declare class CreateRunningRouteDto {
     readonly runningTime: string;
     readonly distance: string;
     readonly review: string;
-    readonly firstLocation: string;
-    readonly secondLocation: string;
-    readonly thirdLocation: string;
+    readonly location: string;
     readonly runningDate: Date;
-    readonly routeImage: string;
     readonly recommendedTags: string[];
     readonly secureTags: string[];
     readonly files: string[];

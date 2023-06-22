@@ -14,11 +14,8 @@ export declare class RunningRoute {
     review: string;
     distance: number;
     runningDate: Date;
-    routeImage: string;
     key: string;
-    firstLocation: string;
-    secondLocation: string;
-    thirdLocation: string;
+    location: string;
     createdAt: Date;
     updatedAt: Date;
     user: User;

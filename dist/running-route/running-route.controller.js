@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RunningRouteController = void 0;
 const common_1 = require("@nestjs/common");
 const nestjs_form_data_1 = require("nestjs-form-data");
-const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const city_query_string_dto_1 = require("./dto/city-query-string.dto");
 const create_running_route_dto_1 = require("./dto/create-running-route.dto");
 const location_query_string_dto_1 = require("./dto/location-query-string.dto");
@@ -38,13 +37,13 @@ let RunningRouteController = class RunningRouteController {
         return await this.runningRouteService.searchBasedOnCity(cityQueryStringDto);
     }
     async getAllSubRoute(req) {
-        return await this.runningRouteService.getAllSubRoute(req.user.userId);
+        return await this.runningRouteService.getAllSubRoute('hongildong');
     }
     async getAllMainRoute(req) {
-        return await this.runningRouteService.getAllMainRoute(req.user.userId);
+        return await this.runningRouteService.getAllMainRoute('hongildong');
     }
     async checkRunningExperience(id, req) {
-        return await this.runningRouteService.checkRunningExperience(id, req.user.userId);
+        return await this.runningRouteService.checkRunningExperience(id, 'hongildong');
     }
     async getMainRouteDetail(id) {
         return await this.runningRouteService.getMainRouteDetail(id);
@@ -94,7 +93,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RunningRouteController.prototype, "searchBasedOnCity", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)('/allSubRoute'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -102,7 +100,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RunningRouteController.prototype, "getAllSubRoute", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)('/allMainRoute'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -110,7 +107,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RunningRouteController.prototype, "getAllMainRoute", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)('/checkRunningExperience/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),

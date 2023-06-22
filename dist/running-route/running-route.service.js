@@ -83,7 +83,7 @@ let RunningRouteService = class RunningRouteService {
         await s3.deleteObject(deleteParams).promise();
     }
     async create(createRunningRouteDto) {
-        const { routeName, arrayOfPos, runningTime, review, distance, firstLocation, secondLocation, thirdLocation, runningDate, routeImage, recommendedTags, secureTags, files, mainRoute, } = createRunningRouteDto;
+        const { routeName, arrayOfPos, runningTime, review, distance, location, runningDate, recommendedTags, secureTags, files, mainRoute, } = createRunningRouteDto;
         const startPoint = `${arrayOfPos[0].latitude} ${arrayOfPos[0].longitude}`;
         const route = arrayOfPos.map((v) => {
             return `${v.latitude} ${v.longitude}`;
@@ -114,72 +114,65 @@ let RunningRouteService = class RunningRouteService {
         const queryRunner = this.dataSource.createQueryRunner();
         await queryRunner.connect();
         await queryRunner.startTransaction();
-        const result = this.uploadToAws(routeImage).then(async (value) => {
-            try {
-                const runningRoute = await this.runningRouteRepository
-                    .createQueryBuilder()
-                    .insert()
-                    .into(running_route_entity_1.RunningRoute)
-                    .values({
-                    routeName: () => `'${routeName}'`,
-                    startPoint: () => `ST_GeomFromText('POINT(${startPoint})')`,
-                    arrayOfPos: () => `ST_GeomFromText('LINESTRING(${linestring})')`,
-                    runningTime: () => `'${runningTime}'`,
-                    review: () => `'${review}'`,
-                    distance: () => `'+${distance}'`,
-                    runningDate: () => `'${runningDate}'`,
-                    routeImage: () => `'${value['url']}'`,
-                    key: () => `'${value['key']}'`,
-                    firstLocation: () => `'${firstLocation}'`,
-                    secondLocation: () => `'${secondLocation}'`,
-                    thirdLocation: () => `'${thirdLocation}'`,
-                    mainRoute: () => (mainRoute ? `'${mainRoute}'` : null),
-                })
-                    .execute();
-                const routeId = runningRoute.identifiers[0].id;
-                if (recommendedTags) {
-                    recommendedTags.map(async (tag) => {
-                        await this.routeRecommendedTagRepository.save({
-                            index: +tag,
+        try {
+            const runningRoute = await this.runningRouteRepository
+                .createQueryBuilder('running_route', queryRunner)
+                .insert()
+                .into(running_route_entity_1.RunningRoute)
+                .values({
+                routeName: () => `'${routeName}'`,
+                startPoint: () => `ST_GeomFromText('POINT(${startPoint})')`,
+                arrayOfPos: () => `ST_GeomFromText('LINESTRING(${linestring})')`,
+                runningTime: () => `'${runningTime}'`,
+                review: () => `'${review}'`,
+                distance: () => `'+${distance}'`,
+                runningDate: () => `'${runningDate}'`,
+                location: () => `'${location}'`,
+                mainRoute: () => (mainRoute ? `'${mainRoute}'` : null),
+            })
+                .execute();
+            const routeId = runningRoute.identifiers[0].id;
+            if (recommendedTags) {
+                recommendedTags.map(async (tag) => {
+                    await this.routeRecommendedTagRepository.save({
+                        index: +tag,
+                        runningRoute: routeId,
+                    });
+                    const index = await this.redis.zscore(process.env.REDIS_KEY, `recommendedTag:${tag}`);
+                    await this.redis.zadd(process.env.REDIS_KEY, +index + 1, `recommendedTag:${tag}`);
+                });
+            }
+            if (secureTags) {
+                secureTags.map(async (tag) => {
+                    await this.routeSecureTagRepository.save({
+                        index: +tag,
+                        runningRoute: routeId,
+                    });
+                    const index = await this.redis.zscore(process.env.REDIS_KEY, `secureTag:${tag}`);
+                    await this.redis.zadd(process.env.REDIS_KEY, +index + 1, `secureTag:${tag}`);
+                });
+            }
+            if (files && files[0] !== '') {
+                files.map((file) => {
+                    this.uploadToAws(file).then(async (value) => {
+                        await this.imageRepository.save({
+                            routeImage: value['url'],
+                            key: value['key'],
                             runningRoute: routeId,
                         });
-                        const index = await this.redis.zscore(process.env.REDIS_KEY, `recommendedTag:${tag}`);
-                        await this.redis.zadd(process.env.REDIS_KEY, +index + 1, `recommendedTag:${tag}`);
                     });
-                }
-                if (secureTags) {
-                    secureTags.map(async (tag) => {
-                        await this.routeSecureTagRepository.save({
-                            index: +tag,
-                            runningRoute: routeId,
-                        });
-                        const index = await this.redis.zscore(process.env.REDIS_KEY, `secureTag:${tag}`);
-                        await this.redis.zadd(process.env.REDIS_KEY, +index + 1, `secureTag:${tag}`);
-                    });
-                }
-                if (files) {
-                    files.map((file) => {
-                        this.uploadToAws(file).then(async (value) => {
-                            await this.imageRepository.save({
-                                routeImage: value['url'],
-                                key: value['key'],
-                                runningRoute: routeId,
-                            });
-                        });
-                    });
-                }
-                await queryRunner.commitTransaction();
-                return routeId;
+                });
             }
-            catch (err) {
-                await queryRunner.rollbackTransaction();
-                throw err;
-            }
-            finally {
-                await queryRunner.release();
-            }
-        });
-        return result;
+            await queryRunner.commitTransaction();
+            return routeId;
+        }
+        catch (err) {
+            await queryRunner.rollbackTransaction();
+            throw err;
+        }
+        finally {
+            await queryRunner.release();
+        }
     }
     LinestringToArray(data) {
         const linestring = data.toString();
@@ -220,11 +213,8 @@ let RunningRouteService = class RunningRouteService {
             runningTime: route.runningTime,
             review: route.review,
             distance: route.distance,
-            firstLocation: route.firstLocation,
-            secondLocation: route.secondLocation,
-            thirdLocation: route.thirdLocation,
+            location: route.location,
             runningDate: route.runningDate,
-            routeImage: route.routeImage,
             recommendedTags: route.routeRecommendedTags.map((tag) => tag.index),
             secureTags: route.routeSecureTags.map((tag) => tag.index),
             files: route.images.map((image) => image.routeImage),
@@ -410,8 +400,7 @@ let RunningRouteService = class RunningRouteService {
             startPoint: arrayOfPos[0],
             arrayOfPos: arrayOfPos,
             distance: route.distance,
-            secondLocation: route.secondLocation,
-            thirdLocation: route.thirdLocation,
+            location: route.location,
         };
         return result;
     }
