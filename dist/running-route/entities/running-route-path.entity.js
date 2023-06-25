@@ -9,38 +9,59 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RouteSecureTag = void 0;
+exports.RunningRoutePath = void 0;
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
 const typeorm_1 = require("typeorm");
 const running_route_entity_1 = require("./running-route.entity");
-const TimeAbs_1 = require("../../common/entities/TimeAbs");
-let RouteSecureTag = class RouteSecureTag extends TimeAbs_1.TimeAbs {
+let RunningRoutePath = class RunningRoutePath extends TimeAbs_1.TimeAbs {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({
         type: 'int',
+        comment: '러닝 경로 아이디',
     }),
     __metadata("design:type", Number)
-], RouteSecureTag.prototype, "id", void 0);
+], RunningRoutePath.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int' }),
-    __metadata("design:type", Number)
-], RouteSecureTag.prototype, "index", void 0);
+    (0, typeorm_1.Column)({
+        type: 'decimal',
+        precision: 10,
+        scale: 8,
+        comment: '경로 위도',
+    }),
+    __metadata("design:type", String)
+], RunningRoutePath.prototype, "latitude", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'decimal',
+        precision: 11,
+        scale: 8,
+        comment: '경로 경도',
+    }),
+    __metadata("design:type", String)
+], RunningRoutePath.prototype, "longitude", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: 'int',
+        comment: '경로 순서',
+    }),
+    __metadata("design:type", Number)
+], RunningRoutePath.prototype, "order", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'int',
+        comment: '경로 아이디',
         name: 'running_route_id',
     }),
     __metadata("design:type", Number)
-], RouteSecureTag.prototype, "runningRouteId", void 0);
+], RunningRoutePath.prototype, "runningRouteId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.routeSecureTags, {
-        cascade: ['soft-remove'],
-    }),
+    (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.runningRoutePaths),
     (0, typeorm_1.JoinColumn)({ name: 'running_route_id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
-], RouteSecureTag.prototype, "runningRoute", void 0);
-RouteSecureTag = __decorate([
-    (0, typeorm_1.Entity)()
-], RouteSecureTag);
-exports.RouteSecureTag = RouteSecureTag;
-//# sourceMappingURL=route-secure-tag.entity.js.map
+], RunningRoutePath.prototype, "runningRoute", void 0);
+RunningRoutePath = __decorate([
+    (0, typeorm_1.Entity)('running_route_paths')
+], RunningRoutePath);
+exports.RunningRoutePath = RunningRoutePath;
+//# sourceMappingURL=running-route-path.entity.js.map

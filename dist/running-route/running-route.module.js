@@ -16,6 +16,7 @@ const nestjs_form_data_1 = require("nestjs-form-data");
 const image_entity_1 = require("./entities/image.entity");
 const route_secure_tag_entity_1 = require("./entities/route-secure-tag.entity");
 const route_recommended_tag_entity_1 = require("./entities/route-recommended-tag.entity");
+const running_route_path_entity_1 = require("./entities/running-route-path.entity");
 let RunningRouteModule = class RunningRouteModule {
 };
 RunningRouteModule = __decorate([
@@ -26,6 +27,7 @@ RunningRouteModule = __decorate([
                 route_secure_tag_entity_1.RouteSecureTag,
                 route_recommended_tag_entity_1.RouteRecommendedTag,
                 image_entity_1.Image,
+                running_route_path_entity_1.RunningRoutePath,
             ]),
             nestjs_form_data_1.NestjsFormDataModule.config({ storage: nestjs_form_data_1.MemoryStoredFile }),
         ],

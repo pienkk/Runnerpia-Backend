@@ -18,6 +18,7 @@ import { UserRecommendedTag } from './user/entities/user-recommended-tag.entity'
 import { UserSecureTag } from './user/entities/user-secure-tag.entity';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ConfigModule } from '@nestjs/config';
+import { RunningRoutePath } from './running-route/entities/running-route-path.entity';
 
 @Module({
   imports: [
@@ -41,8 +42,11 @@ import { ConfigModule } from '@nestjs/config';
             RouteRecommendedTag,
             RouteSecureTag,
             Image,
+            RunningRoutePath,
           ],
           synchronize: true, // Fix me : set this value to false when deploy
+          logging: true,
+          // dropSchema: true,
         };
       },
       async dataSourceFactory(options) {

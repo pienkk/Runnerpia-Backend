@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Image = void 0;
 const typeorm_1 = require("typeorm");
 const running_route_entity_1 = require("./running-route.entity");
-let Image = class Image {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+let Image = class Image extends TimeAbs_1.TimeAbs {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -27,13 +28,14 @@ __decorate([
     __metadata("design:type", String)
 ], Image.prototype, "key", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Image.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)({ type: 'int', name: 'running_route_id' }),
+    __metadata("design:type", Number)
+], Image.prototype, "runningRouteId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.images, {
-        onDelete: 'CASCADE',
+        cascade: ['soft-remove'],
     }),
+    (0, typeorm_1.JoinColumn)({ name: 'running_route_id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], Image.prototype, "runningRoute", void 0);
 Image = __decorate([

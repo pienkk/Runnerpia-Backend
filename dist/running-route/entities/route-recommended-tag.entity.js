@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RouteRecommendedTag = void 0;
 const typeorm_1 = require("typeorm");
 const running_route_entity_1 = require("./running-route.entity");
-let RouteRecommendedTag = class RouteRecommendedTag {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+let RouteRecommendedTag = class RouteRecommendedTag extends TimeAbs_1.TimeAbs {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -23,13 +24,14 @@ __decorate([
     __metadata("design:type", Number)
 ], RouteRecommendedTag.prototype, "index", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], RouteRecommendedTag.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)({ type: 'int', name: 'running_route_id' }),
+    __metadata("design:type", Number)
+], RouteRecommendedTag.prototype, "runningRouteId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.routeRecommendedTags, {
-        onDelete: 'CASCADE',
+        cascade: ['soft-remove'],
     }),
+    (0, typeorm_1.JoinColumn)({ name: 'running_route_id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], RouteRecommendedTag.prototype, "runningRoute", void 0);
 RouteRecommendedTag = __decorate([

@@ -6,7 +6,7 @@ import { RunningRouteService } from './running-route.service';
 export declare class RunningRouteController {
     private readonly runningRouteService;
     constructor(runningRouteService: RunningRouteService);
-    create(createRunningRouteDto: CreateRunningRouteDto): Promise<any>;
+    create(createRunningRouteDto: CreateRunningRouteDto): Promise<import("./dto/response-running-route.dto").ResponseCreateRunningRouteDto>;
     getPopularTags(): Promise<string[]>;
     searchBasedOnLocation(searchQueryStringDto: LocationQueryStringDto): Promise<object[]>;
     searchBasedOnCity(cityQueryStringDto: CityQueryStringDto): Promise<object[]>;

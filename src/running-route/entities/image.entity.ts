@@ -4,11 +4,13 @@ import {
   CreateDateColumn,
   ManyToOne,
   Column,
+  JoinColumn,
 } from 'typeorm';
 import { RunningRoute } from './running-route.entity';
+import { TimeAbs } from 'src/common/entities/TimeAbs';
 
 @Entity()
-export class Image {
+export class Image extends TimeAbs {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,11 +20,12 @@ export class Image {
   @Column({ type: 'varchar' })
   key: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: 'int', name: 'running_route_id' })
+  runningRouteId: number;
 
   @ManyToOne(() => RunningRoute, (runningRoute) => runningRoute.images, {
-    onDelete: 'CASCADE',
+    cascade: ['soft-remove'],
   })
+  @JoinColumn({ name: 'running_route_id' })
   runningRoute: RunningRoute;
 }

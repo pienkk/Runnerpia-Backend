@@ -17,22 +17,30 @@ const bookmark_entity_1 = require("./bookmark.entity");
 const like_entity_1 = require("./like.entity");
 const user_recommended_tag_entity_1 = require("./user-recommended-tag.entity");
 const user_secure_tag_entity_1 = require("./user-secure-tag.entity");
-let User = class User {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+let User = class User extends TimeAbs_1.TimeAbs {
 };
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: true }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        type: 'int',
+        comment: '유저 아이디',
+    }),
+    __metadata("design:type", Number)
+], User.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: true, comment: '유저 이름' }),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 20 }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20, comment: '유저 닉네임' }),
     __metadata("design:type", String)
 ], User.prototype, "nickname", void 0);
 __decorate([
-    (0, typeorm_1.PrimaryColumn)({ type: 'varchar', length: 50 }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, comment: '유저 아이디' }),
     __metadata("design:type", String)
 ], User.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true, comment: '유저 비밀번호' }),
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
@@ -41,29 +49,26 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "numberOfUse", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'int', nullable: true, comment: '유저 생년월일' }),
     __metadata("design:type", Number)
 ], User.prototype, "birthDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: ['F', 'M'], nullable: true }),
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: ['F', 'M'],
+        nullable: true,
+        comment: '유저 성별',
+    }),
     __metadata("design:type", String)
 ], User.prototype, "gender", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true, comment: '유저 도시' }),
     __metadata("design:type", String)
 ], User.prototype, "city", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true, comment: '유저 군' }),
     __metadata("design:type", String)
 ], User.prototype, "state", void 0);
-__decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
-__decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], User.prototype, "updatedAt", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     (0, class_transformer_1.Exclude)(),

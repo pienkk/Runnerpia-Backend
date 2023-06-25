@@ -1,29 +1,30 @@
-import { Geometry } from 'wkx';
 import { User } from '../../user/entities/user.entity';
 import { Bookmark } from '../../user/entities/bookmark.entity';
 import { Like } from '../../user/entities/like.entity';
 import { RouteRecommendedTag } from './route-recommended-tag.entity';
 import { RouteSecureTag } from './route-secure-tag.entity';
 import { Image } from './image.entity';
-export declare class RunningRoute {
+import { TimeAbs } from 'src/common/entities/TimeAbs';
+import { RunningRoutePath } from './running-route-path.entity';
+export declare class RunningRoute extends TimeAbs {
     id: number;
     routeName: string;
-    startPoint: Geometry;
-    arrayOfPos: Geometry;
+    startLatitude: string;
+    startLongitude: string;
     runningTime: string;
     review: string;
-    distance: number;
+    distance: string;
     runningDate: Date;
     key: string;
     location: string;
-    createdAt: Date;
-    updatedAt: Date;
-    user: User;
+    userId: number;
     bookmarks: Bookmark[];
     likes: Like[];
     routeRecommendedTags: RouteRecommendedTag[];
     routeSecureTags: RouteSecureTag[];
     images: Image[];
-    mainRoute: RunningRoute;
     subRoute: RunningRoute[];
+    runningRoutePaths: RunningRoutePath[];
+    user: User;
+    mainRoute: RunningRoute;
 }

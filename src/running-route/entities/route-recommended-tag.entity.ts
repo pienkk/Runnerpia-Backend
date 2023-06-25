@@ -4,26 +4,29 @@ import {
   CreateDateColumn,
   ManyToOne,
   Column,
+  JoinColumn,
 } from 'typeorm';
 import { RunningRoute } from './running-route.entity';
+import { TimeAbs } from 'src/common/entities/TimeAbs';
 
 @Entity()
-export class RouteRecommendedTag {
+export class RouteRecommendedTag extends TimeAbs {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'int' })
   index: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: 'int', name: 'running_route_id' })
+  runningRouteId: number;
 
   @ManyToOne(
     () => RunningRoute,
     (runningRoute) => runningRoute.routeRecommendedTags,
     {
-      onDelete: 'CASCADE',
+      cascade: ['soft-remove'],
     },
   )
+  @JoinColumn({ name: 'running_route_id' })
   runningRoute: RunningRoute;
 }

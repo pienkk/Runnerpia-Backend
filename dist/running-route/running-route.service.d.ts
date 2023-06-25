@@ -9,6 +9,8 @@ import { UpdateRunningRouteDto } from './dto/update-running-route.dto';
 import { LocationQueryStringDto } from './dto/location-query-string.dto';
 import { CityQueryStringDto } from './dto/city-query-string.dto';
 import Redis from 'ioredis';
+import { ResponseCreateRunningRouteDto } from './dto/response-running-route.dto';
+import { RunningRoutePath } from './entities/running-route-path.entity';
 export declare class RunningRouteService {
     private redis;
     private dataSource;
@@ -16,10 +18,11 @@ export declare class RunningRouteService {
     private routeRecommendedTagRepository;
     private routeSecureTagRepository;
     private imageRepository;
-    constructor(redis: Redis, dataSource: DataSource, runningRouteRepository: Repository<RunningRoute>, routeRecommendedTagRepository: Repository<RouteRecommendedTag>, routeSecureTagRepository: Repository<RouteSecureTag>, imageRepository: Repository<Image>);
+    private runningRoutePathRepository;
+    constructor(redis: Redis, dataSource: DataSource, runningRouteRepository: Repository<RunningRoute>, routeRecommendedTagRepository: Repository<RouteRecommendedTag>, routeSecureTagRepository: Repository<RouteSecureTag>, imageRepository: Repository<Image>, runningRoutePathRepository: Repository<RunningRoutePath>);
     uploadToAws(image: string): Promise<object>;
     deleteImageToAws(key: string): Promise<void>;
-    create(createRunningRouteDto: CreateRunningRouteDto): Promise<any>;
+    create(createRunningRouteDto: CreateRunningRouteDto): Promise<ResponseCreateRunningRouteDto>;
     LinestringToArray(data: Geometry): Array<object>;
     getById(id: number): Promise<object>;
     getMainRouteDetail(id: number): Promise<{}>;

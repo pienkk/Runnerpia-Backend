@@ -3,7 +3,9 @@ import { Bookmark } from './bookmark.entity';
 import { Like } from './like.entity';
 import { UserRecommendedTag } from './user-recommended-tag.entity';
 import { UserSecureTag } from './user-secure-tag.entity';
-export declare class User {
+import { TimeAbs } from 'src/common/entities/TimeAbs';
+export declare class User extends TimeAbs {
+    id: number;
     name: string;
     nickname: string;
     userId: string;
@@ -13,8 +15,6 @@ export declare class User {
     gender: 'F' | 'M';
     city: string;
     state: string;
-    createdAt: Date;
-    updatedAt: Date;
     currentHashedRefreshToken?: string;
     runningRoutes: RunningRoute[];
     bookmarks: Bookmark[];

@@ -1,7 +1,8 @@
 import { RunningRoute } from './running-route.entity';
-export declare class RouteRecommendedTag {
+import { TimeAbs } from 'src/common/entities/TimeAbs';
+export declare class RouteRecommendedTag extends TimeAbs {
     id: number;
     index: number;
-    createdAt: Date;
+    runningRouteId: number;
     runningRoute: RunningRoute;
 }

@@ -12,47 +12,67 @@ var RunningRoute_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RunningRoute = void 0;
 const typeorm_1 = require("typeorm");
-const wkx_1 = require("wkx");
 const user_entity_1 = require("../../user/entities/user.entity");
 const bookmark_entity_1 = require("../../user/entities/bookmark.entity");
 const like_entity_1 = require("../../user/entities/like.entity");
 const route_recommended_tag_entity_1 = require("./route-recommended-tag.entity");
 const route_secure_tag_entity_1 = require("./route-secure-tag.entity");
 const image_entity_1 = require("./image.entity");
-let RunningRoute = RunningRoute_1 = class RunningRoute {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+const running_route_path_entity_1 = require("./running-route-path.entity");
+let RunningRoute = RunningRoute_1 = class RunningRoute extends TimeAbs_1.TimeAbs {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        type: 'int',
+        comment: '경로 아이디',
+    }),
     __metadata("design:type", Number)
 ], RunningRoute.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 50, unique: true }),
+    (0, typeorm_1.Column)({
+        type: 'varchar',
+        length: 50,
+        unique: true,
+        name: 'route_name',
+        comment: '경로 이름',
+    }),
     __metadata("design:type", String)
 ], RunningRoute.prototype, "routeName", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'point' }),
-    __metadata("design:type", wkx_1.Geometry)
-], RunningRoute.prototype, "startPoint", void 0);
+    (0, typeorm_1.Column)({
+        type: 'decimal',
+        precision: 10,
+        scale: 8,
+        name: 'start_latitude',
+        comment: '경로 시작 위도',
+    }),
+    __metadata("design:type", String)
+], RunningRoute.prototype, "startLatitude", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: 'linestring',
+        type: 'decimal',
+        precision: 11,
+        scale: 8,
+        name: 'start_logitude',
+        comment: '경로 시작 경도',
     }),
-    __metadata("design:type", wkx_1.Geometry)
-], RunningRoute.prototype, "arrayOfPos", void 0);
+    __metadata("design:type", String)
+], RunningRoute.prototype, "startLongitude", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'time' }),
+    (0, typeorm_1.Column)({ type: 'time', name: 'running_time', comment: '러닝 시간' }),
     __metadata("design:type", String)
 ], RunningRoute.prototype, "runningTime", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 100 }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100, comment: '리뷰' }),
     __metadata("design:type", String)
 ], RunningRoute.prototype, "review", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'float' }),
-    __metadata("design:type", Number)
+    (0, typeorm_1.Column)({ type: 'float', comment: '거리' }),
+    __metadata("design:type", String)
 ], RunningRoute.prototype, "distance", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'date' }),
+    (0, typeorm_1.Column)({ type: 'date', name: 'running_date', comment: '러닝 날짜' }),
     __metadata("design:type", Date)
 ], RunningRoute.prototype, "runningDate", void 0);
 __decorate([
@@ -60,21 +80,17 @@ __decorate([
     __metadata("design:type", String)
 ], RunningRoute.prototype, "key", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, comment: '위치' }),
     __metadata("design:type", String)
 ], RunningRoute.prototype, "location", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], RunningRoute.prototype, "createdAt", void 0);
-__decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], RunningRoute.prototype, "updatedAt", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.runningRoutes),
-    __metadata("design:type", user_entity_1.User)
-], RunningRoute.prototype, "user", void 0);
+    (0, typeorm_1.Column)({
+        type: 'int',
+        name: 'user_id',
+        comment: '유저 아이디',
+    }),
+    __metadata("design:type", Number)
+], RunningRoute.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => bookmark_entity_1.Bookmark, (bookmark) => bookmark.runningRoute),
     __metadata("design:type", Array)
@@ -96,15 +112,24 @@ __decorate([
     __metadata("design:type", Array)
 ], RunningRoute.prototype, "images", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => RunningRoute_1, (runningRoute) => runningRoute.subRoute),
-    __metadata("design:type", RunningRoute)
-], RunningRoute.prototype, "mainRoute", void 0);
-__decorate([
     (0, typeorm_1.OneToMany)(() => RunningRoute_1, (runningRoute) => runningRoute.mainRoute),
     __metadata("design:type", Array)
 ], RunningRoute.prototype, "subRoute", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => running_route_path_entity_1.RunningRoutePath, (runningRoutePath) => runningRoutePath.runningRoute),
+    __metadata("design:type", Array)
+], RunningRoute.prototype, "runningRoutePaths", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.runningRoutes),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
+    __metadata("design:type", user_entity_1.User)
+], RunningRoute.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => RunningRoute_1, (runningRoute) => runningRoute.subRoute),
+    __metadata("design:type", RunningRoute)
+], RunningRoute.prototype, "mainRoute", void 0);
 RunningRoute = RunningRoute_1 = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('running_routes')
 ], RunningRoute);
 exports.RunningRoute = RunningRoute;
 //# sourceMappingURL=running-route.entity.js.map

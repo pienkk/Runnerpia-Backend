@@ -7,6 +7,7 @@ import { NestjsFormDataModule, MemoryStoredFile } from 'nestjs-form-data';
 import { Image } from './entities/image.entity';
 import { RouteSecureTag } from './entities/route-secure-tag.entity';
 import { RouteRecommendedTag } from './entities/route-recommended-tag.entity';
+import { RunningRoutePath } from './entities/running-route-path.entity';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { RouteRecommendedTag } from './entities/route-recommended-tag.entity';
       RouteSecureTag,
       RouteRecommendedTag,
       Image,
+      RunningRoutePath,
     ]),
     NestjsFormDataModule.config({ storage: MemoryStoredFile }),
   ],

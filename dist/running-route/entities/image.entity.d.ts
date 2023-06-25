@@ -1,8 +1,9 @@
 import { RunningRoute } from './running-route.entity';
-export declare class Image {
+import { TimeAbs } from 'src/common/entities/TimeAbs';
+export declare class Image extends TimeAbs {
     id: number;
     routeImage: string;
     key: string;
-    createdAt: Date;
+    runningRouteId: number;
     runningRoute: RunningRoute;
 }

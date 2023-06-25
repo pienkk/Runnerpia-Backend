@@ -19,6 +19,8 @@ import { LocationQueryStringDto } from './dto/location-query-string.dto';
 import { CityQueryStringDto } from './dto/city-query-string.dto';
 import Redis from 'ioredis';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import { ResponseCreateRunningRouteDto } from './dto/response-running-route.dto';
+import { RunningRoutePath } from './entities/running-route-path.entity';
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -48,6 +50,9 @@ export class RunningRouteService {
 
     @InjectRepository(Image)
     private imageRepository: Repository<Image>,
+
+    @InjectRepository(RunningRoutePath)
+    private runningRoutePathRepository: Repository<RunningRoutePath>,
   ) {
     this.runningRouteRepository = runningRouteRepository;
     this.routeRecommendedTagRepository = routeRecommendedTagRepository;
@@ -114,7 +119,7 @@ export class RunningRouteService {
   async create(
     createRunningRouteDto: CreateRunningRouteDto,
     // userId: string,
-  ): Promise<any> {
+  ): Promise<ResponseCreateRunningRouteDto> {
     const {
       routeName,
       arrayOfPos,
@@ -123,21 +128,21 @@ export class RunningRouteService {
       distance,
       location,
       runningDate,
-      // routeImage,
       recommendedTags,
       secureTags,
       files,
       mainRoute,
     } = createRunningRouteDto;
 
-    const startPoint = `${arrayOfPos[0].latitude} ${arrayOfPos[0].longitude}`;
+    // const startPoint = `${arrayOfPos[0].latitude} ${arrayOfPos[0].longitude}`;
 
-    const route = arrayOfPos.map((v) => {
-      return `${v.latitude} ${v.longitude}`;
-    });
+    // const route = arrayOfPos.map((v) => {
+    //   return `${v.latitude} ${v.longitude}`;
+    // });
 
-    const linestring = route.join(',');
+    // const linestring = route.join(',');
 
+    // 메인 경로가 존재할 경우 (인수인계)
     if (mainRoute) {
       const route = await this.runningRouteRepository.findOneBy({
         id: mainRoute,
@@ -152,6 +157,7 @@ export class RunningRouteService {
       }
     }
 
+    // 동일한 routeName이 존재할 경우 에러 발생
     const isExistRouteName = await this.runningRouteRepository.find({
       where: { routeName: routeName },
     });
@@ -164,8 +170,8 @@ export class RunningRouteService {
       });
     }
 
+    // 트랜잭션 연결
     const queryRunner = this.dataSource.createQueryRunner();
-
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
@@ -175,33 +181,46 @@ export class RunningRouteService {
       //   routeName: routeName,
       //   startPoint: `ST_GeomFromText('POINT(${startPoint})')`,
       // });
-      const runningRoute = await this.runningRouteRepository
-        .createQueryBuilder('running_route', queryRunner)
-        .insert()
-        .into(RunningRoute)
-        .values({
-          routeName: () => `'${routeName}'`,
-          startPoint: () => `ST_GeomFromText('POINT(${startPoint})')`,
-          arrayOfPos: () => `ST_GeomFromText('LINESTRING(${linestring})')`,
-          runningTime: () => `'${runningTime}'`,
-          review: () => `'${review}'`,
-          distance: () => `'+${distance}'`,
-          runningDate: () => `'${runningDate}'`,
-          // routeImage: () => `'${value['url']}'`,
-          // key: () => `'${value['key']}'`,
-          location: () => `'${location}'`,
-          mainRoute: () => (mainRoute ? `'${mainRoute}'` : null),
-          // user: () => `'${userId}'`,
-        })
-        .execute();
+      const runningRoute = await queryRunner.manager.save(RunningRoute, {
+        routeName: routeName,
+        startLatitude: arrayOfPos[0].latitude,
+        startLongitude: arrayOfPos[0].longitude,
+        runningTime: runningTime,
+        review: review,
+        distance: distance,
+        runningDate: runningDate,
+        location: location,
+        // 테스트용으로 1번
+        userId: 1,
+      });
+      // const runningRoute = await this.runningRouteRepository
+      //   .createQueryBuilder('running_route', queryRunner)
+      //   .insert()
+      //   .into(RunningRoute)
+      //   .values({
+      //     routeName: () => `'${routeName}'`,
+      //     startPoint: () => `ST_GeomFromText('POINT(${startPoint})')`,
+      //     arrayOfPos: () => `ST_GeomFromText('LINESTRING(${linestring})')`,
+      //     runningTime: () => `'${runningTime}'`,
+      //     review: () => `'${review}'`,
+      //     distance: () => `'+${distance}'`,
+      //     runningDate: () => `'${runningDate}'`,
+      //     // routeImage: () => `'${value['url']}'`,
+      //     // key: () => `'${value['key']}'`,
+      //     location: () => `'${location}'`,
+      //     mainRoute: () => (mainRoute ? `'${mainRoute}'` : null),
+      //     // user: () => `'${userId}'`,
+      //   })
+      //   .execute();
 
-      const routeId = runningRoute.identifiers[0].id;
+      // const routeId = runningRoute.identifiers[0].id;
 
+      // recommendedTag가 존재할경우 (인수인계)
       if (recommendedTags) {
-        recommendedTags.map(async (tag) => {
-          await this.routeRecommendedTagRepository.save({
+        for await (const tag of recommendedTags) {
+          await queryRunner.manager.insert(RouteRecommendedTag, {
             index: +tag,
-            runningRoute: routeId,
+            runningRouteId: runningRoute.id,
           });
           const index = await this.redis.zscore(
             process.env.REDIS_KEY,
@@ -213,26 +232,44 @@ export class RunningRouteService {
             +index + 1,
             `recommendedTag:${tag}`,
           );
-        });
+        }
       }
 
+      // secureTag가 존재할경우 (인수인계)
       if (secureTags) {
-        secureTags.map(async (tag) => {
-          await this.routeSecureTagRepository.save({
+        for await (const tag of secureTags) {
+          await queryRunner.manager.insert(RouteSecureTag, {
             index: +tag,
-            runningRoute: routeId,
+            runningRouteId: runningRoute.id,
           });
-
           const index = await this.redis.zscore(
             process.env.REDIS_KEY,
             `secureTag:${tag}`,
           );
+
           await this.redis.zadd(
             process.env.REDIS_KEY,
             +index + 1,
             `secureTag:${tag}`,
           );
+        }
+      }
+
+      // 경로 데이터가 2개 이상일 경우
+      if (arrayOfPos.length > 1) {
+        const route = arrayOfPos.map((location, idx) => {
+          return this.runningRoutePathRepository.create({
+            latitude: location.latitude,
+            longitude: location.longitude,
+            runningRouteId: runningRoute.id,
+            order: idx,
+          });
         });
+
+        // 최초 경로 데이터 삭제
+        route.shift();
+
+        await queryRunner.manager.insert(RunningRoutePath, route);
       }
 
       if (files && files[0] !== '') {
@@ -241,7 +278,7 @@ export class RunningRouteService {
             await this.imageRepository.save({
               routeImage: value['url'],
               key: value['key'],
-              runningRoute: routeId,
+              runningRouteId: runningRoute.id,
             });
           });
         });
@@ -249,7 +286,7 @@ export class RunningRouteService {
 
       await queryRunner.commitTransaction();
 
-      return routeId;
+      return { routeId: runningRoute.id };
     } catch (err) {
       await queryRunner.rollbackTransaction();
       throw err;
@@ -297,14 +334,14 @@ export class RunningRouteService {
       });
     }
 
-    const arrayOfPos = this.LinestringToArray(route.arrayOfPos);
+    // const arrayOfPos = this.LinestringToArray(route.arrayOfPos);
 
     const result = {
       id: route.id,
       // user: { userId: route.user.userId, nickname: route.user.nickname },
       routeName: route.routeName,
-      startPoint: arrayOfPos[0],
-      arrayOfPos: arrayOfPos,
+      // startPoint: arrayOfPos[0],
+      // arrayOfPos: arrayOfPos,
       runningTime: route.runningTime,
       review: route.review,
       distance: route.distance,
@@ -547,13 +584,13 @@ export class RunningRouteService {
   async searchResult(id: number): Promise<object> {
     const route = await this.runningRouteRepository.findOneBy({ id });
 
-    const arrayOfPos = this.LinestringToArray(route.arrayOfPos);
+    // const arrayOfPos = this.LinestringToArray(route.arrayOfPos);
 
     const result = {
       id: route.id,
       routeName: route.routeName,
-      startPoint: arrayOfPos[0],
-      arrayOfPos: arrayOfPos,
+      // startPoint: arrayOfPos[0],
+      // arrayOfPos: arrayOfPos,
       distance: route.distance,
       location: route.location,
     };

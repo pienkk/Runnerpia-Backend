@@ -27,6 +27,7 @@ const user_recommended_tag_entity_1 = require("./user/entities/user-recommended-
 const user_secure_tag_entity_1 = require("./user/entities/user-secure-tag.entity");
 const nestjs_redis_1 = require("@liaoliaots/nestjs-redis");
 const config_1 = require("@nestjs/config");
+const running_route_path_entity_1 = require("./running-route/entities/running-route-path.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -52,8 +53,10 @@ AppModule = __decorate([
                             route_recommended_tag_entity_1.RouteRecommendedTag,
                             route_secure_tag_entity_1.RouteSecureTag,
                             image_entity_1.Image,
+                            running_route_path_entity_1.RunningRoutePath,
                         ],
                         synchronize: true,
+                        logging: true,
                     };
                 },
                 async dataSourceFactory(options) {

@@ -1,53 +1,52 @@
 import { Exclude } from 'class-transformer';
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RunningRoute } from '../../running-route/entities/running-route.entity';
 import { Bookmark } from './bookmark.entity';
 import { Like } from './like.entity';
 import { UserRecommendedTag } from './user-recommended-tag.entity';
 import { UserSecureTag } from './user-secure-tag.entity';
+import { TimeAbs } from 'src/common/entities/TimeAbs';
 
 @Entity()
-export class User {
-  @Column({ type: 'varchar', length: 20, nullable: true })
+export class User extends TimeAbs {
+  @PrimaryGeneratedColumn({
+    type: 'int',
+    comment: '유저 아이디',
+  })
+  id: number;
+
+  @Column({ type: 'varchar', length: 20, nullable: true, comment: '유저 이름' })
   name: string;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ type: 'varchar', length: 20, comment: '유저 닉네임' })
   nickname: string;
 
-  @PrimaryColumn({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50, comment: '유저 아이디' })
   userId: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, comment: '유저 비밀번호' })
   @Exclude()
   password: string;
 
   @Column({ type: 'int', default: 0 })
   numberOfUse: number;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'int', nullable: true, comment: '유저 생년월일' })
   birthDate: number;
 
-  @Column({ type: 'enum', enum: ['F', 'M'], nullable: true })
+  @Column({
+    type: 'enum',
+    enum: ['F', 'M'],
+    nullable: true,
+    comment: '유저 성별',
+  })
   gender: 'F' | 'M';
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true, comment: '유저 도시' })
   city: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true, comment: '유저 군' })
   state: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @Column({ nullable: true })
   @Exclude()

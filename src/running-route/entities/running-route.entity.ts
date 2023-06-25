@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Geometry } from 'wkx';
 import { User } from '../../user/entities/user.entity';
@@ -14,33 +15,61 @@ import { Like } from '../../user/entities/like.entity';
 import { RouteRecommendedTag } from './route-recommended-tag.entity';
 import { RouteSecureTag } from './route-secure-tag.entity';
 import { Image } from './image.entity';
+import { TimeAbs } from 'src/common/entities/TimeAbs';
+import { RunningRoutePath } from './running-route-path.entity';
 
-@Entity()
-export class RunningRoute {
-  @PrimaryGeneratedColumn()
+@Entity('running_routes')
+export class RunningRoute extends TimeAbs {
+  @PrimaryGeneratedColumn({
+    type: 'int',
+    comment: '경로 아이디',
+  })
   id: number;
 
-  @Column({ type: 'varchar', length: 50, unique: true })
+  @Column({
+    type: 'varchar',
+    length: 50,
+    unique: true,
+    name: 'route_name',
+    comment: '경로 이름',
+  })
   routeName: string;
 
-  @Column({ type: 'point' })
-  startPoint: Geometry;
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 8,
+    name: 'start_latitude',
+    comment: '경로 시작 위도',
+  })
+  startLatitude: string;
 
   @Column({
-    type: 'linestring',
+    type: 'decimal',
+    precision: 11,
+    scale: 8,
+    name: 'start_logitude',
+    comment: '경로 시작 경도',
   })
-  arrayOfPos: Geometry;
+  startLongitude: string;
 
-  @Column({ type: 'time' })
+  // @Column({ type: 'point' })
+  // startPoint: Geometry;
+
+  // @Column({
+  //   type: 'linestring',
+  // })
+  // arrayOfPos: Geometry;
+  @Column({ type: 'time', name: 'running_time', comment: '러닝 시간' })
   runningTime: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, comment: '리뷰' })
   review: string;
 
-  @Column({ type: 'float' })
-  distance: number;
+  @Column({ type: 'float', comment: '거리' })
+  distance: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date', name: 'running_date', comment: '러닝 날짜' })
   runningDate: Date;
 
   // @Column({ type: 'varchar' })
@@ -49,17 +78,15 @@ export class RunningRoute {
   @Column({ type: 'varchar', nullable: true })
   key: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: 50, comment: '위치' })
   location: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @ManyToOne(() => User, (user) => user.runningRoutes)
-  user: User;
+  @Column({
+    type: 'int',
+    name: 'user_id',
+    comment: '유저 아이디',
+  })
+  userId: number;
 
   @OneToMany(() => Bookmark, (bookmark) => bookmark.runningRoute)
   bookmarks: Bookmark[];
@@ -76,9 +103,19 @@ export class RunningRoute {
   @OneToMany(() => Image, (image) => image.runningRoute)
   images: Image[];
 
-  @ManyToOne(() => RunningRoute, (runningRoute) => runningRoute.subRoute)
-  mainRoute: RunningRoute;
-
   @OneToMany(() => RunningRoute, (runningRoute) => runningRoute.mainRoute)
   subRoute: RunningRoute[];
+
+  @OneToMany(
+    () => RunningRoutePath,
+    (runningRoutePath) => runningRoutePath.runningRoute,
+  )
+  runningRoutePaths: RunningRoutePath[];
+
+  @ManyToOne(() => User, (user) => user.runningRoutes)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @ManyToOne(() => RunningRoute, (runningRoute) => runningRoute.subRoute)
+  mainRoute: RunningRoute;
 }
