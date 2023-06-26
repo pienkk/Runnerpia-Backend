@@ -1,7 +1,6 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
   ManyToOne,
   Column,
   JoinColumn,
@@ -9,12 +8,14 @@ import {
 import { RunningRoute } from './running-route.entity';
 import { TimeAbs } from 'src/common/entities/TimeAbs';
 
-@Entity()
+@Entity('images')
 export class Image extends TimeAbs {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({
+    type: 'int',
+  })
   id: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', name: 'route_image' })
   routeImage: string;
 
   @Column({ type: 'varchar' })
@@ -26,6 +27,6 @@ export class Image extends TimeAbs {
   @ManyToOne(() => RunningRoute, (runningRoute) => runningRoute.images, {
     cascade: ['soft-remove'],
   })
-  @JoinColumn({ name: 'running_route_id' })
+  @JoinColumn({ name: 'running_route_id', referencedColumnName: 'id' })
   runningRoute: RunningRoute;
 }

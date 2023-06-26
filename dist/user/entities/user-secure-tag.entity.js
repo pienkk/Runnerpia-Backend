@@ -12,10 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserSecureTag = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
-let UserSecureTag = class UserSecureTag {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+let UserSecureTag = class UserSecureTag extends TimeAbs_1.TimeAbs {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        type: 'int',
+    }),
     __metadata("design:type", Number)
 ], UserSecureTag.prototype, "id", void 0);
 __decorate([
@@ -23,16 +26,16 @@ __decorate([
     __metadata("design:type", Number)
 ], UserSecureTag.prototype, "index", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], UserSecureTag.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)({ type: 'int', name: 'user_id', comment: '유저 아이디' }),
+    __metadata("design:type", Number)
+], UserSecureTag.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.userSecureTags, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.User)
 ], UserSecureTag.prototype, "user", void 0);
 UserSecureTag = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('user_secure_tags')
 ], UserSecureTag);
 exports.UserSecureTag = UserSecureTag;
 //# sourceMappingURL=user-secure-tag.entity.js.map

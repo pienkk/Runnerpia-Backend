@@ -36,11 +36,11 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.routeSecureTags, {
         cascade: ['soft-remove'],
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'running_route_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'running_route_id', referencedColumnName: 'id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], RouteSecureTag.prototype, "runningRoute", void 0);
 RouteSecureTag = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('route_secure_tags')
 ], RouteSecureTag);
 exports.RouteSecureTag = RouteSecureTag;
 //# sourceMappingURL=route-secure-tag.entity.js.map

@@ -16,11 +16,13 @@ const TimeAbs_1 = require("../../common/entities/TimeAbs");
 let Image = class Image extends TimeAbs_1.TimeAbs {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        type: 'int',
+    }),
     __metadata("design:type", Number)
 ], Image.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
+    (0, typeorm_1.Column)({ type: 'varchar', name: 'route_image' }),
     __metadata("design:type", String)
 ], Image.prototype, "routeImage", void 0);
 __decorate([
@@ -35,11 +37,11 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.images, {
         cascade: ['soft-remove'],
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'running_route_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'running_route_id', referencedColumnName: 'id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], Image.prototype, "runningRoute", void 0);
 Image = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('images')
 ], Image);
 exports.Image = Image;
 //# sourceMappingURL=image.entity.js.map

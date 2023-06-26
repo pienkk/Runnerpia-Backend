@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], RouteRecommendedTag.prototype, "runningRoute", void 0);
 RouteRecommendedTag = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('route_recommended_tags')
 ], RouteRecommendedTag);
 exports.RouteRecommendedTag = RouteRecommendedTag;
 //# sourceMappingURL=route-recommended-tag.entity.js.map

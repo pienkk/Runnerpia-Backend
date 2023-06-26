@@ -92,6 +92,14 @@ __decorate([
     __metadata("design:type", Number)
 ], RunningRoute.prototype, "userId", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        type: 'int',
+        name: 'main_route_id',
+        comment: '메인 경로 아이디',
+    }),
+    __metadata("design:type", Number)
+], RunningRoute.prototype, "mainRouteId", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => bookmark_entity_1.Bookmark, (bookmark) => bookmark.runningRoute),
     __metadata("design:type", Array)
 ], RunningRoute.prototype, "bookmarks", void 0);
@@ -121,11 +129,12 @@ __decorate([
 ], RunningRoute.prototype, "runningRoutePaths", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.runningRoutes),
-    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.User)
 ], RunningRoute.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => RunningRoute_1, (runningRoute) => runningRoute.subRoute),
+    (0, typeorm_1.JoinColumn)({ name: 'main_route_id', referencedColumnName: 'id' }),
     __metadata("design:type", RunningRoute)
 ], RunningRoute.prototype, "mainRoute", void 0);
 RunningRoute = RunningRoute_1 = __decorate([

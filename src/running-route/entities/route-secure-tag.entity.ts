@@ -1,7 +1,6 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
   ManyToOne,
   Column,
   JoinColumn,
@@ -9,7 +8,7 @@ import {
 import { RunningRoute } from './running-route.entity';
 import { TimeAbs } from 'src/common/entities/TimeAbs';
 
-@Entity()
+@Entity('route_secure_tags')
 export class RouteSecureTag extends TimeAbs {
   @PrimaryGeneratedColumn({
     type: 'int',
@@ -32,6 +31,6 @@ export class RouteSecureTag extends TimeAbs {
       cascade: ['soft-remove'],
     },
   )
-  @JoinColumn({ name: 'running_route_id' })
+  @JoinColumn({ name: 'running_route_id', referencedColumnName: 'id' })
   runningRoute: RunningRoute;
 }

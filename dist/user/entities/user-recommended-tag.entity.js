@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRecommendedTag = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
-let UserRecommendedTag = class UserRecommendedTag {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+let UserRecommendedTag = class UserRecommendedTag extends TimeAbs_1.TimeAbs {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -23,18 +24,18 @@ __decorate([
     __metadata("design:type", Number)
 ], UserRecommendedTag.prototype, "index", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], UserRecommendedTag.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)({ type: 'int', name: 'user_id', comment: '유저 아이디' }),
+    __metadata("design:type", Number)
+], UserRecommendedTag.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.userRecommendedTags, {
-        onDelete: 'CASCADE',
+        cascade: ['soft-remove'],
     }),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.User)
 ], UserRecommendedTag.prototype, "user", void 0);
 UserRecommendedTag = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('user_recommended_tags')
 ], UserRecommendedTag);
 exports.UserRecommendedTag = UserRecommendedTag;
 //# sourceMappingURL=user-recommended-tag.entity.js.map

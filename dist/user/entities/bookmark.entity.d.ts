@@ -1,8 +1,10 @@
 import { RunningRoute } from '../../running-route/entities/running-route.entity';
 import { User } from './user.entity';
-export declare class Bookmark {
+import { TimeAbs } from 'src/common/entities/TimeAbs';
+export declare class Bookmark extends TimeAbs {
     id: number;
-    createdAt: Date;
+    userId: number;
+    runningRouteId: number;
     user: User;
     runningRoute: RunningRoute;
 }

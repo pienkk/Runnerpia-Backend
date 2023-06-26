@@ -9,7 +9,7 @@ import {
 import { RunningRoute } from './running-route.entity';
 import { TimeAbs } from 'src/common/entities/TimeAbs';
 
-@Entity()
+@Entity('route_recommended_tags')
 export class RouteRecommendedTag extends TimeAbs {
   @PrimaryGeneratedColumn()
   id: number;

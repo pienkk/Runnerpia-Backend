@@ -7,21 +7,22 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { TimeAbs } from 'src/common/entities/TimeAbs';
 
-@Entity()
-export class UserRecommendedTag {
+@Entity('user_recommended_tags')
+export class UserRecommendedTag extends TimeAbs {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'int' })
   index: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: 'int', name: 'user_id', comment: '유저 아이디' })
+  userId: number;
 
   @ManyToOne(() => User, (user) => user.userRecommendedTags, {
-    onDelete: 'CASCADE',
+    cascade: ['soft-remove'],
   })
-  @JoinColumn()
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 }

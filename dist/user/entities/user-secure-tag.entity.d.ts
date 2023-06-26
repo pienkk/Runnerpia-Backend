@@ -1,7 +1,8 @@
 import { User } from './user.entity';
-export declare class UserSecureTag {
+import { TimeAbs } from 'src/common/entities/TimeAbs';
+export declare class UserSecureTag extends TimeAbs {
     id: number;
     index: number;
-    createdAt: Date;
+    userId: number;
     user: User;
 }

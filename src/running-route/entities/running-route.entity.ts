@@ -88,6 +88,13 @@ export class RunningRoute extends TimeAbs {
   })
   userId: number;
 
+  @Column({
+    type: 'int',
+    name: 'main_route_id',
+    comment: '메인 경로 아이디',
+  })
+  mainRouteId: number;
+
   @OneToMany(() => Bookmark, (bookmark) => bookmark.runningRoute)
   bookmarks: Bookmark[];
 
@@ -113,9 +120,10 @@ export class RunningRoute extends TimeAbs {
   runningRoutePaths: RunningRoutePath[];
 
   @ManyToOne(() => User, (user) => user.runningRoutes)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @ManyToOne(() => RunningRoute, (runningRoute) => runningRoute.subRoute)
+  @JoinColumn({ name: 'main_route_id', referencedColumnName: 'id' })
   mainRoute: RunningRoute;
 }

@@ -18,6 +18,7 @@ export declare class RunningRoute extends TimeAbs {
     key: string;
     location: string;
     userId: number;
+    mainRouteId: number;
     bookmarks: Bookmark[];
     likes: Like[];
     routeRecommendedTags: RouteRecommendedTag[];

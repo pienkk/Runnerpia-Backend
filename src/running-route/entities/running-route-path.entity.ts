@@ -49,6 +49,6 @@ export class RunningRoutePath extends TimeAbs {
     () => RunningRoute,
     (runningRoute) => runningRoute.runningRoutePaths,
   )
-  @JoinColumn({ name: 'running_route_id' })
+  @JoinColumn({ name: 'running_route_id', referencedColumnName: 'id' })
   runningRoute: RunningRoute;
 }

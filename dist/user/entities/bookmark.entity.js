@@ -13,26 +13,43 @@ exports.Bookmark = void 0;
 const typeorm_1 = require("typeorm");
 const running_route_entity_1 = require("../../running-route/entities/running-route.entity");
 const user_entity_1 = require("./user.entity");
-let Bookmark = class Bookmark {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+let Bookmark = class Bookmark extends TimeAbs_1.TimeAbs {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        type: 'int',
+    }),
     __metadata("design:type", Number)
 ], Bookmark.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Bookmark.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)({
+        type: 'int',
+        name: 'user_id',
+        comment: '유저 아이디',
+    }),
+    __metadata("design:type", Number)
+], Bookmark.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'int',
+        name: 'running_route_id',
+        comment: '러닝 경로 아이디',
+    }),
+    __metadata("design:type", Number)
+], Bookmark.prototype, "runningRouteId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.bookmarks),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.User)
 ], Bookmark.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.bookmarks),
+    (0, typeorm_1.JoinColumn)({ name: 'running_route_id', referencedColumnName: 'id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], Bookmark.prototype, "runningRoute", void 0);
 Bookmark = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('bookmarks')
 ], Bookmark);
 exports.Bookmark = Bookmark;
 //# sourceMappingURL=bookmark.entity.js.map

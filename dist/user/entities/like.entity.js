@@ -13,26 +13,43 @@ exports.Like = void 0;
 const typeorm_1 = require("typeorm");
 const running_route_entity_1 = require("../../running-route/entities/running-route.entity");
 const user_entity_1 = require("./user.entity");
-let Like = class Like {
+const TimeAbs_1 = require("../../common/entities/TimeAbs");
+let Like = class Like extends TimeAbs_1.TimeAbs {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        type: 'int',
+    }),
     __metadata("design:type", Number)
 ], Like.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Like.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)({
+        type: 'int',
+        name: 'user_id',
+        comment: '유저 아이디',
+    }),
+    __metadata("design:type", Number)
+], Like.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'int',
+        name: 'running_route_id',
+        comment: '러닝 경로 아이디',
+    }),
+    __metadata("design:type", Number)
+], Like.prototype, "runningRouteId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.likes),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.User)
 ], Like.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.likes),
+    (0, typeorm_1.JoinColumn)({ name: 'running_route_id', referencedColumnName: 'id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], Like.prototype, "runningRoute", void 0);
 Like = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('likes')
 ], Like);
 exports.Like = Like;
 //# sourceMappingURL=like.entity.js.map

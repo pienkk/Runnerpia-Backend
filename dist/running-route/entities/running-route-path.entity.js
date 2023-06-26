@@ -57,7 +57,7 @@ __decorate([
 ], RunningRoutePath.prototype, "runningRouteId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => running_route_entity_1.RunningRoute, (runningRoute) => runningRoute.runningRoutePaths),
-    (0, typeorm_1.JoinColumn)({ name: 'running_route_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'running_route_id', referencedColumnName: 'id' }),
     __metadata("design:type", running_route_entity_1.RunningRoute)
 ], RunningRoutePath.prototype, "runningRoute", void 0);
 RunningRoutePath = __decorate([
