@@ -27,5 +27,5 @@ export declare class RunningRoute extends TimeAbs {
     subRoute: RunningRoute[];
     runningRoutePaths: RunningRoutePath[];
     user: User;
-    mainRoute: RunningRoute;
+    mainRoute?: RunningRoute;
 }

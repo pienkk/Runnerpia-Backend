@@ -96,6 +96,7 @@ __decorate([
         type: 'int',
         name: 'main_route_id',
         comment: '메인 경로 아이디',
+        nullable: true,
     }),
     __metadata("design:type", Number)
 ], RunningRoute.prototype, "mainRouteId", void 0);

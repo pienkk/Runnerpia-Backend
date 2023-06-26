@@ -2,13 +2,10 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { Geometry } from 'wkx';
 import { User } from '../../user/entities/user.entity';
 import { Bookmark } from '../../user/entities/bookmark.entity';
 import { Like } from '../../user/entities/like.entity';
@@ -92,6 +89,7 @@ export class RunningRoute extends TimeAbs {
     type: 'int',
     name: 'main_route_id',
     comment: '메인 경로 아이디',
+    nullable: true,
   })
   mainRouteId: number;
 
@@ -125,5 +123,5 @@ export class RunningRoute extends TimeAbs {
 
   @ManyToOne(() => RunningRoute, (runningRoute) => runningRoute.subRoute)
   @JoinColumn({ name: 'main_route_id', referencedColumnName: 'id' })
-  mainRoute: RunningRoute;
+  mainRoute?: RunningRoute;
 }
