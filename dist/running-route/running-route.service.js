@@ -220,13 +220,52 @@ let RunningRouteService = class RunningRouteService {
     }
     async getById(id) {
         const route = await this.runningRouteRepository.findOne({
+            select: {
+                id: true,
+                routeName: true,
+                startLatitude: true,
+                startLongitude: true,
+                runningTime: true,
+                review: true,
+                distance: true,
+                runningDate: true,
+                location: true,
+                mainRouteId: true,
+                user: {
+                    userId: true,
+                    nickname: true,
+                },
+                routeRecommendedTags: {
+                    index: true,
+                },
+                routeSecureTags: {
+                    index: true,
+                },
+                images: {
+                    routeImage: true,
+                },
+                runningRoutePaths: {
+                    latitude: true,
+                    longitude: true,
+                },
+                subRoute: {
+                    id: true,
+                },
+            },
             where: { id: id },
-            relations: [
-                'routeRecommendedTags',
-                'routeSecureTags',
-                'images',
-                'mainRoute',
-            ],
+            relations: {
+                user: true,
+                routeRecommendedTags: true,
+                routeSecureTags: true,
+                images: true,
+                subRoute: true,
+                runningRoutePaths: true,
+            },
+            order: {
+                runningRoutePaths: {
+                    order: 'ASC',
+                },
+            },
         });
         if (!route) {
             throw new common_1.NotFoundException({
@@ -235,24 +274,11 @@ let RunningRouteService = class RunningRouteService {
                 error: 'NotFound',
             });
         }
-        const result = {
-            id: route.id,
-            routeName: route.routeName,
-            runningTime: route.runningTime,
-            review: route.review,
-            distance: route.distance,
-            location: route.location,
-            runningDate: route.runningDate,
-            recommendedTags: route.routeRecommendedTags.map((tag) => tag.index),
-            secureTags: route.routeSecureTags.map((tag) => tag.index),
-            files: route.images.map((image) => image.routeImage),
-            mainRoute: route.mainRoute ? route.mainRoute.id : null,
-        };
-        return result;
+        return route;
     }
     async getMainRouteDetail(id) {
         const mainRoute = await this.getById(id);
-        if (mainRoute['mainRoute'] !== null) {
+        if (mainRoute.mainRoute !== null) {
             throw new common_1.ForbiddenException({
                 statusCode: common_1.HttpStatus.FORBIDDEN,
                 message: ['This route is not mainRoute'],
@@ -261,17 +287,10 @@ let RunningRouteService = class RunningRouteService {
         }
         const tags = await this.sumTags(id);
         Object.assign(mainRoute, tags);
-        const subRoutes = await this.runningRouteRepository
-            .createQueryBuilder('route')
-            .select('route.id')
-            .where('route.mainRouteId = :id', { id })
-            .execute();
-        const result = {};
-        result['mainRoute'] = mainRoute;
-        result['subRoutes'] = await Promise.all(subRoutes.map(async (route) => {
-            return await this.getById(route.route_id);
+        mainRoute.subRoute = await Promise.all(mainRoute.subRoute.map(async (route) => {
+            return await this.getById(route.id);
         }));
-        return result;
+        return mainRoute;
     }
     async update(id, updateRunningRouteDto) {
         const route = await this.runningRouteRepository.findOne({

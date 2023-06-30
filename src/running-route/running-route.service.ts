@@ -314,16 +314,55 @@ export class RunningRouteService {
     return arrayOfPos;
   }
 
-  async getById(id: number): Promise<object> {
+  async getById(id: number): Promise<RunningRoute> {
     const route = await this.runningRouteRepository.findOne({
+      select: {
+        id: true,
+        routeName: true,
+        startLatitude: true,
+        startLongitude: true,
+        runningTime: true,
+        review: true,
+        distance: true,
+        runningDate: true,
+        location: true,
+        mainRouteId: true,
+        user: {
+          userId: true,
+          nickname: true,
+        },
+        routeRecommendedTags: {
+          index: true,
+        },
+        routeSecureTags: {
+          index: true,
+        },
+        images: {
+          routeImage: true,
+        },
+        runningRoutePaths: {
+          latitude: true,
+          longitude: true,
+        },
+        subRoute: {
+          id: true,
+        },
+      },
       where: { id: id },
-      relations: [
-        // 'user',
-        'routeRecommendedTags',
-        'routeSecureTags',
-        'images',
-        'mainRoute',
-      ],
+      relations: {
+        user: true,
+        routeRecommendedTags: true,
+        routeSecureTags: true,
+        images: true,
+        subRoute: true,
+        runningRoutePaths: true,
+      },
+      order: {
+        // 경로 순서 정렬
+        runningRoutePaths: {
+          order: 'ASC',
+        },
+      },
     });
 
     if (!route) {
@@ -334,33 +373,35 @@ export class RunningRouteService {
       });
     }
 
+    return route;
+
     // const arrayOfPos = this.LinestringToArray(route.arrayOfPos);
 
-    const result = {
-      id: route.id,
-      // user: { userId: route.user.userId, nickname: route.user.nickname },
-      routeName: route.routeName,
-      // startPoint: arrayOfPos[0],
-      // arrayOfPos: arrayOfPos,
-      runningTime: route.runningTime,
-      review: route.review,
-      distance: route.distance,
-      location: route.location,
-      runningDate: route.runningDate,
-      // routeImage: route.routeImage,
-      recommendedTags: route.routeRecommendedTags.map((tag) => tag.index),
-      secureTags: route.routeSecureTags.map((tag) => tag.index),
-      files: route.images.map((image) => image.routeImage),
-      mainRoute: route.mainRoute ? route.mainRoute.id : null,
-    };
+    // const result = {
+    //   id: route.id,
+    //   // user: { userId: route.user.userId, nickname: route.user.nickname },
+    //   routeName: route.routeName,
+    //   // startPoint: arrayOfPos[0],
+    //   // arrayOfPos: arrayOfPos,
+    //   runningTime: route.runningTime,
+    //   review: route.review,
+    //   distance: route.distance,
+    //   location: route.location,
+    //   runningDate: route.runningDate,
+    //   // routeImage: route.routeImage,
+    //   recommendedTags: route.routeRecommendedTags.map((tag) => tag.index),
+    //   secureTags: route.routeSecureTags.map((tag) => tag.index),
+    //   files: route.images.map((image) => image.routeImage),
+    //   mainRoute: route.mainRoute ? route.mainRoute.id : null,
+    // };
 
-    return result;
+    // return result;
   }
 
   async getMainRouteDetail(id: number) {
     const mainRoute = await this.getById(id);
 
-    if (mainRoute['mainRoute'] !== null) {
+    if (mainRoute.mainRoute !== null) {
       throw new ForbiddenException({
         statusCode: HttpStatus.FORBIDDEN,
         message: ['This route is not mainRoute'],
@@ -371,21 +412,21 @@ export class RunningRouteService {
     const tags = await this.sumTags(id);
     Object.assign(mainRoute, tags);
 
-    const subRoutes = await this.runningRouteRepository
-      .createQueryBuilder('route')
-      .select('route.id')
-      .where('route.mainRouteId = :id', { id })
-      .execute();
+    // const subRoutes = await this.runningRouteRepository
+    //   .createQueryBuilder('route')
+    //   .select('route.id')
+    //   .where('route.mainRouteId = :id', { id })
+    //   .execute();
 
-    const result = {};
-    result['mainRoute'] = mainRoute;
-    result['subRoutes'] = await Promise.all(
-      subRoutes.map(async (route) => {
-        return await this.getById(route.route_id);
+    // const result = {};
+    // result['mainRoute'] = mainRoute;
+    mainRoute.subRoute = await Promise.all(
+      mainRoute.subRoute.map(async (route) => {
+        return await this.getById(route.id);
       }),
     );
 
-    return result;
+    return mainRoute;
   }
 
   async update(

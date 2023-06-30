@@ -15,8 +15,8 @@ export declare class RunningRouteController {
     checkRunningExperience(id: number, req: any): Promise<{
         check: boolean;
     }>;
-    getMainRouteDetail(id: number): Promise<{}>;
-    getById(id: number): Promise<object>;
+    getMainRouteDetail(id: number): Promise<import("./entities/running-route.entity").RunningRoute>;
+    getById(id: number): Promise<import("./entities/running-route.entity").RunningRoute>;
     checkRouteName(routeName: string): Promise<{
         result: boolean;
         count: number;

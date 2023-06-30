@@ -24,8 +24,8 @@ export declare class RunningRouteService {
     deleteImageToAws(key: string): Promise<void>;
     create(createRunningRouteDto: CreateRunningRouteDto): Promise<ResponseCreateRunningRouteDto>;
     LinestringToArray(data: Geometry): Array<object>;
-    getById(id: number): Promise<object>;
-    getMainRouteDetail(id: number): Promise<{}>;
+    getById(id: number): Promise<RunningRoute>;
+    getMainRouteDetail(id: number): Promise<RunningRoute>;
     update(id: number, updateRunningRouteDto: UpdateRunningRouteDto): Promise<void>;
     delete(id: number): Promise<void>;
     checkRunningExperience(id: number, userId: string): Promise<{
