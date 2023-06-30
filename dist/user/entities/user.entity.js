@@ -24,9 +24,10 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({
         type: 'int',
         comment: '유저 아이디',
+        name: 'user_idx',
     }),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
+], User.prototype, "userIdx", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: true, comment: '유저 이름' }),
     __metadata("design:type", String)

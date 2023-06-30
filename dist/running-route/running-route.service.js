@@ -247,6 +247,7 @@ let RunningRouteService = class RunningRouteService {
                 runningRoutePaths: {
                     latitude: true,
                     longitude: true,
+                    order: true,
                 },
                 subRoute: {
                     id: true,
@@ -278,7 +279,8 @@ let RunningRouteService = class RunningRouteService {
     }
     async getMainRouteDetail(id) {
         const mainRoute = await this.getById(id);
-        if (mainRoute.mainRoute !== null) {
+        console.log(mainRoute);
+        if (mainRoute.mainRouteId !== null) {
             throw new common_1.ForbiddenException({
                 statusCode: common_1.HttpStatus.FORBIDDEN,
                 message: ['This route is not mainRoute'],

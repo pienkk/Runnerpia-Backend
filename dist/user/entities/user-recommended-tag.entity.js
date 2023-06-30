@@ -24,14 +24,14 @@ __decorate([
     __metadata("design:type", Number)
 ], UserRecommendedTag.prototype, "index", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', name: 'user_id', comment: '유저 아이디' }),
+    (0, typeorm_1.Column)({ type: 'int', name: 'user_idx', comment: '유저 아이디' }),
     __metadata("design:type", Number)
-], UserRecommendedTag.prototype, "userId", void 0);
+], UserRecommendedTag.prototype, "userIdx", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.userRecommendedTags, {
         cascade: ['soft-remove'],
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", user_entity_1.User)
 ], UserRecommendedTag.prototype, "user", void 0);
 UserRecommendedTag = __decorate([

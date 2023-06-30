@@ -26,12 +26,12 @@ __decorate([
     __metadata("design:type", Number)
 ], UserSecureTag.prototype, "index", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', name: 'user_id', comment: '유저 아이디' }),
+    (0, typeorm_1.Column)({ type: 'int', name: 'user_idx', comment: '유저 아이디' }),
     __metadata("design:type", Number)
-], UserSecureTag.prototype, "userId", void 0);
+], UserSecureTag.prototype, "userIdx", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.userSecureTags, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", user_entity_1.User)
 ], UserSecureTag.prototype, "user", void 0);
 UserSecureTag = __decorate([

@@ -86,11 +86,11 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({
         type: 'int',
-        name: 'user_id',
+        name: 'user_idx',
         comment: '유저 아이디',
     }),
     __metadata("design:type", Number)
-], RunningRoute.prototype, "userId", void 0);
+], RunningRoute.prototype, "userIdx", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: 'int',
@@ -130,7 +130,7 @@ __decorate([
 ], RunningRoute.prototype, "runningRoutePaths", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.runningRoutes),
-    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'user_idx' }),
     __metadata("design:type", user_entity_1.User)
 ], RunningRoute.prototype, "user", void 0);
 __decorate([

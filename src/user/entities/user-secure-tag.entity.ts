@@ -19,10 +19,10 @@ export class UserSecureTag extends TimeAbs {
   @Column({ type: 'int' })
   index: number;
 
-  @Column({ type: 'int', name: 'user_id', comment: '유저 아이디' })
-  userId: number;
+  @Column({ type: 'int', name: 'user_idx', comment: '유저 아이디' })
+  userIdx: number;
 
   @ManyToOne(() => User, (user) => user.userSecureTags, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 }

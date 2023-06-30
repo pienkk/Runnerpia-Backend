@@ -343,6 +343,7 @@ export class RunningRouteService {
         runningRoutePaths: {
           latitude: true,
           longitude: true,
+          order: true,
         },
         subRoute: {
           id: true,
@@ -401,7 +402,8 @@ export class RunningRouteService {
   async getMainRouteDetail(id: number) {
     const mainRoute = await this.getById(id);
 
-    if (mainRoute.mainRoute !== null) {
+    console.log(mainRoute);
+    if (mainRoute.mainRouteId !== null) {
       throw new ForbiddenException({
         statusCode: HttpStatus.FORBIDDEN,
         message: ['This route is not mainRoute'],

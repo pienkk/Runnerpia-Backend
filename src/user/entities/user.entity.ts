@@ -12,8 +12,9 @@ export class User extends TimeAbs {
   @PrimaryGeneratedColumn({
     type: 'int',
     comment: '유저 아이디',
+    name: 'user_idx',
   })
-  id: number;
+  userIdx: number;
 
   @Column({ type: 'varchar', length: 20, nullable: true, comment: '유저 이름' })
   name: string;

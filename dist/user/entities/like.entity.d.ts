@@ -3,7 +3,7 @@ import { User } from './user.entity';
 import { TimeAbs } from 'src/common/entities/TimeAbs';
 export declare class Like extends TimeAbs {
     id: number;
-    userId: number;
+    userIdx: number;
     runningRouteId: number;
     user: User;
     runningRoute: RunningRoute;

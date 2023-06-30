@@ -5,7 +5,7 @@ import { UserRecommendedTag } from './user-recommended-tag.entity';
 import { UserSecureTag } from './user-secure-tag.entity';
 import { TimeAbs } from 'src/common/entities/TimeAbs';
 export declare class User extends TimeAbs {
-    id: number;
+    userIdx: number;
     name: string;
     nickname: string;
     userId: string;

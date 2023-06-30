@@ -19,10 +19,10 @@ export class Bookmark extends TimeAbs {
 
   @Column({
     type: 'int',
-    name: 'user_id',
+    name: 'user_idx',
     comment: '유저 아이디',
   })
-  userId: number;
+  userIdx: number;
 
   @Column({
     type: 'int',
@@ -32,7 +32,7 @@ export class Bookmark extends TimeAbs {
   runningRouteId: number;
 
   @ManyToOne(() => User, (user) => user.bookmarks)
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'user_idx' })
   user: User;
 
   @ManyToOne(() => RunningRoute, (runningRoute) => runningRoute.bookmarks)
