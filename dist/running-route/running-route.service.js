@@ -129,7 +129,7 @@ let RunningRouteService = class RunningRouteService {
                 distance: distance,
                 runningDate: runningDate,
                 location: location,
-                userId: 1,
+                userIdx: 1,
             });
             if (recommendedTags) {
                 try {

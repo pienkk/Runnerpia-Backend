@@ -191,7 +191,7 @@ export class RunningRouteService {
         runningDate: runningDate,
         location: location,
         // 테스트용으로 1번
-        userId: 1,
+        userIdx: 1,
       });
       // const runningRoute = await this.runningRouteRepository
       //   .createQueryBuilder('running_route', queryRunner)
