@@ -70,6 +70,7 @@ AppModule = __decorate([
                 config: {
                     host: process.env.REDIS_HOST,
                     port: parseInt(process.env.REDIS_DOCKER_PORT),
+                    password: process.env.REDIS_PASSWORD,
                 },
             }),
             user_module_1.UserModule,

@@ -60,7 +60,7 @@ import { RunningRoutePath } from './running-route/entities/running-route-path.en
       config: {
         host: process.env.REDIS_HOST,
         port: parseInt(process.env.REDIS_DOCKER_PORT),
-        // password: process.env.REDIS_PASSWORD,
+        password: process.env.REDIS_PASSWORD,
       },
     }),
     UserModule,

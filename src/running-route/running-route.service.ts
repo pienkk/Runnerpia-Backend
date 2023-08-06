@@ -58,6 +58,7 @@ export class RunningRouteService {
     this.routeRecommendedTagRepository = routeRecommendedTagRepository;
     this.routeSecureTagRepository = routeSecureTagRepository;
     this.imageRepository = imageRepository;
+    this.runningRoutePathRepository = runningRoutePathRepository;
   }
 
   async uploadToAws(image: string): Promise<object> {
@@ -340,11 +341,6 @@ export class RunningRouteService {
         images: {
           routeImage: true,
         },
-        runningRoutePaths: {
-          latitude: true,
-          longitude: true,
-          order: true,
-        },
         subRoute: {
           id: true,
         },
@@ -356,7 +352,6 @@ export class RunningRouteService {
         routeSecureTags: true,
         images: true,
         subRoute: true,
-        runningRoutePaths: true,
       },
       order: {
         // 경로 순서 정렬
@@ -373,6 +368,20 @@ export class RunningRouteService {
         error: 'NotFound',
       });
     }
+
+    // 하위 경로 지정
+    const runningRoutePaths = await this.runningRoutePathRepository.find({
+      select: { latitude: true, longitude: true, order: true },
+      where: { runningRouteId: id },
+      order: { order: 'ASC' },
+    });
+
+    // order 삭제
+    for (const runningRoutePath of runningRoutePaths) {
+      delete runningRoutePath.order;
+    }
+
+    route.runningRoutePaths = runningRoutePaths;
 
     return route;
 
@@ -402,7 +411,6 @@ export class RunningRouteService {
   async getMainRouteDetail(id: number) {
     const mainRoute = await this.getById(id);
 
-    console.log(mainRoute);
     if (mainRoute.mainRouteId !== null) {
       throw new ForbiddenException({
         statusCode: HttpStatus.FORBIDDEN,

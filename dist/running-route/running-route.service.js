@@ -52,6 +52,7 @@ let RunningRouteService = class RunningRouteService {
         this.routeRecommendedTagRepository = routeRecommendedTagRepository;
         this.routeSecureTagRepository = routeSecureTagRepository;
         this.imageRepository = imageRepository;
+        this.runningRoutePathRepository = runningRoutePathRepository;
     }
     async uploadToAws(image) {
         const reg_for_extension = new RegExp('\\/(.*)\\;');
@@ -244,11 +245,6 @@ let RunningRouteService = class RunningRouteService {
                 images: {
                     routeImage: true,
                 },
-                runningRoutePaths: {
-                    latitude: true,
-                    longitude: true,
-                    order: true,
-                },
                 subRoute: {
                     id: true,
                 },
@@ -260,7 +256,6 @@ let RunningRouteService = class RunningRouteService {
                 routeSecureTags: true,
                 images: true,
                 subRoute: true,
-                runningRoutePaths: true,
             },
             order: {
                 runningRoutePaths: {
@@ -275,11 +270,19 @@ let RunningRouteService = class RunningRouteService {
                 error: 'NotFound',
             });
         }
+        const runningRoutePaths = await this.runningRoutePathRepository.find({
+            select: { latitude: true, longitude: true, order: true },
+            where: { runningRouteId: id },
+            order: { order: 'ASC' },
+        });
+        for (const runningRoutePath of runningRoutePaths) {
+            delete runningRoutePath.order;
+        }
+        route.runningRoutePaths = runningRoutePaths;
         return route;
     }
     async getMainRouteDetail(id) {
         const mainRoute = await this.getById(id);
-        console.log(mainRoute);
         if (mainRoute.mainRouteId !== null) {
             throw new common_1.ForbiddenException({
                 statusCode: common_1.HttpStatus.FORBIDDEN,

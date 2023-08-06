@@ -2,30 +2,32 @@ version: '3'
 
 services:
   db:
-    image: mysql:5.7
+    image: mysql:8.0.33
     container_name: mysql
     env_file: ./.env
     volumes:
       - ./database/data:/var/lib/mysql
     ports:
-      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
       MYSQL_DATABASE: $MYSQLDB_DATABASE
     networks:
       - backend
-    platform: linux/x86_64
 
   web:
-    image: $DOCKER_HUB_USER/running-map
-    container_name: web
+    image: runnerpia
+    container_name: runnerpia
+    build:
+      context: '.'
+      dockerfile: Dockerfile
     env_file: ./.env
     restart: always
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     depends_on:
       - db
-      - redis
+      # - redis
     networks:
       - backend
 
@@ -35,8 +37,8 @@ services:
     env_file: ./.env
     restart: always
     ports:
-      - $REDIS_LOCAL_PORT:$REDIS_DOCKER_PORT
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+      - 6379:6379
+    # command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - backend
 
