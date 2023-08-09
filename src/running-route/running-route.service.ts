@@ -353,12 +353,6 @@ export class RunningRouteService {
         images: true,
         subRoute: true,
       },
-      order: {
-        // 경로 순서 정렬
-        runningRoutePaths: {
-          order: 'ASC',
-        },
-      },
     });
 
     if (!route) {

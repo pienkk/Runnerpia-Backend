@@ -257,11 +257,6 @@ let RunningRouteService = class RunningRouteService {
                 images: true,
                 subRoute: true,
             },
-            order: {
-                runningRoutePaths: {
-                    order: 'ASC',
-                },
-            },
         });
         if (!route) {
             throw new common_1.NotFoundException({
